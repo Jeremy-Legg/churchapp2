@@ -14,7 +14,7 @@ function useStickyState<S>(key: string, defaultValue: S, generator?: (state: any
     });
 
     useEffect(() => {
-        console.log(`${key} modified. Saving: ${JSON.stringify(value)}`);
+        // console.log(`${key} modified. Saving: ${JSON.stringify(value)}`);
         window.localStorage.setItem(key, JSON.stringify(value));
     }, [key, value]);
     return [value, setValue];

@@ -1,11 +1,21 @@
 import React, {useState} from "react";
-import {Avatar, Button, createStyles, List, ListItem, ListItemAvatar, ListItemText, Theme} from "@material-ui/core";
+import {
+    Avatar,
+    Button,
+    createStyles, IconButton,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemSecondaryAction,
+    ListItemText,
+    Theme
+} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {SSDialog} from "../single-string-dialog";
 import {useStickyState} from "../../hooks/sticky";
 import {IPerson, Person} from "../../model/IPerson";
-
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -22,25 +32,26 @@ export const SetupPeople = () => {
     const [open, setOpen] = useState(false);
     const generator = (allOfThem: any[]) => {
         let allPeople = Array.from(allOfThem);
-        console.log(`All people to be generated: ${JSON.stringify(allPeople)}`);
+        // console.log(`All people to be generated: ${JSON.stringify(allPeople)}`);
         return allPeople.map(t => Object.assign(new Person(""), t));
     };
 
     const [people, setPeople] = useStickyState<IPerson[]>("People", [], generator);
-    console.warn(`Our saved people: ${JSON.stringify(people)}`);
     const addNewPerson = (person: string) => {
         if (person === "") {
             console.log("Person is undefined");
             return;
         }
         let newPerson = new Person(person);
-        console.warn(`Adding a new person: ${JSON.stringify(newPerson)}`)
         let newPeople = [...people, newPerson];
-        console.warn(`All the things: ${JSON.stringify(newPeople)}`)
         setPeople(newPeople);
         setOpen(false);
     };
     const handleOpen = () => setOpen(true);
+
+    const deletePerson = (personToDelete:IPerson) => {
+        setPeople(people.filter(person => person.id !== personToDelete.id))
+    };
 
     return (<div>
 
@@ -53,7 +64,13 @@ export const SetupPeople = () => {
                             <ListItemAvatar>
                                 <Avatar>{person.firstLetter()}</Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={person.name} secondary={person.id}/>
+                            {/*<ListItemText primary={person.name} secondary={person.id}/>*/}
+                            <ListItemText primary={person.name}/>
+                            <ListItemSecondaryAction>
+                                <IconButton onClick={() => deletePerson(person)} edge="end" aria-label="delete">
+                                    <DeleteForeverIcon />
+                                </IconButton>
+                            </ListItemSecondaryAction>
                         </ListItem>
                     )
                 })

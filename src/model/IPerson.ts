@@ -18,6 +18,12 @@ export class Person implements IPerson {
 
     public firstLetter(): string {
         if(this.name && this.name.length > 0) {
+            let names = this.name.split(" ");
+            if(names.length > 1) {
+                return names.reduce((prev, current) => {
+                    return prev + current[0]
+                }, "").toUpperCase()
+            }
             return this.name[0].toUpperCase();
         }
         return "";
