@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
 import {usePeopleState, useTags} from "../hooks/our-state";
 import {ChurchEvent} from "../model/IChurchEvent";
@@ -32,17 +32,22 @@ export const NewEventPage = () => {
     const toggleSelected = (person: IPerson) => {
         console.log(`toggle ${person.id}`);
         event.togglePersonInEvent(person);
+        setEvent(event);
     };
+
+    useEffect(() => {
+        console.log("render the thing")
+    }, [event]);
 
     return (
         <>
             <h1>New Event</h1>
-            <div>{event.name}</div>
+            <div>{event.name} - {JSON.stringify(event.people)}</div>
             {
                 people.map((person, index) => {
                     return (
                         <React.Fragment key={index}>
-                            {event.isPersonInEvent(person) && <h2 key={index}>SELECTED</h2>}
+                            {event.isPersonInEvent(person) && <h2>SELECTED</h2>}
                             <Card key={index} className={classes.root} variant="outlined"
                                   onClick={() => toggleSelected(person)}
                             >
