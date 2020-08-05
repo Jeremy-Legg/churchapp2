@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
-import {usePeopleState, useTags} from "../hooks/our-state";
+import {usePeopleState, useTags} from "../hooks/data-state";
 import {ChurchEvent} from "../model/IChurchEvent";
 import {Avatar, Card, CardContent, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {IPerson} from "../model/IPerson";
+import {useInstanceState} from "../hooks/object-state";
 
 const useStyles = makeStyles({
     root: {
@@ -27,17 +28,12 @@ export const NewEventPage = () => {
     let [people] = usePeopleState();
     let [tags] = useTags();
 
-    let [event, setEvent] = useState(new ChurchEvent(eventName));
+    let [event, setEvent] = useInstanceState(new ChurchEvent(eventName));
 
     const toggleSelected = (person: IPerson) => {
-        console.log(`toggle ${person.id}`);
         event.togglePersonInEvent(person);
         setEvent(event);
     };
-
-    useEffect(() => {
-        console.log("render the thing")
-    }, [event]);
 
     return (
         <>

@@ -16,7 +16,7 @@ import {SSDialog} from "../single-string-dialog";
 import {useStickyState} from "../../hooks/sticky";
 import {IPerson, Person} from "../../model/IPerson";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import {usePeopleState} from "../../hooks/our-state";
+import {usePeopleState} from "../../hooks/data-state";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
