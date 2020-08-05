@@ -1,5 +1,6 @@
 import React from 'react';
 import {OurNavButton} from "./nav-button";
+import {NewEventButton} from "./events/new-event";
 
 export const HomePage = () => {
     return (
@@ -10,7 +11,7 @@ export const HomePage = () => {
                     <div className="container">
                         <h1 className="display-3">App Name</h1>
                         <p>Here is some text about what the app is</p>
-                        <OurNavButton title="Create Night"/>
+                        <NewEventButton/>
                     </div>
                 </div>
 

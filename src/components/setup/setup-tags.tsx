@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {Avatar, Button, Chip, createStyles, Theme} from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {makeStyles} from "@material-ui/core/styles";
-import {useStickyState} from "../../hooks/sticky";
 import {SSDialog} from "../single-string-dialog";
+import {useTags} from "../../hooks/our-state";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,7 +22,7 @@ export const SetupTags = () => {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [tags, setTags] = useStickyState<string[]>("NightTags", []);
+    const [tags, setTags] = useTags();
 
     const handleClose = () => setOpen(false);
     const addNewTag = (newTagName: string) => {

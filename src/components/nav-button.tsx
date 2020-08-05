@@ -2,13 +2,14 @@ import {Button} from "@material-ui/core";
 import {DoubleArrow} from "@material-ui/icons";
 import React from "react";
 
-export type ButtonProps = {
+export type OurButtonShape = {
     title: string;
-    handler?: () => void;
+    onClick?: () => void;
 }
 
-export const OurNavButton = (props: ButtonProps) => {
+export const OurNavButton = (props: OurButtonShape) => {
     return (
-        <Button variant="contained" color={"primary"}>{props.title} <DoubleArrow/></Button>
+        <Button onClick={props.onClick} variant="contained" color={"primary"}>{props.title}
+            <DoubleArrow/></Button>
     )
 };

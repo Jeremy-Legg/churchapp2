@@ -16,6 +16,8 @@ import {SSDialog} from "../single-string-dialog";
 import {useStickyState} from "../../hooks/sticky";
 import {IPerson, Person} from "../../model/IPerson";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import {usePeopleState} from "../../hooks/our-state";
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -30,13 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export const SetupPeople = () => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const generator = (allOfThem: any[]) => {
-        let allPeople = Array.from(allOfThem);
-        // console.log(`All people to be generated: ${JSON.stringify(allPeople)}`);
-        return allPeople.map(t => Object.assign(new Person(""), t));
-    };
+    const [people, setPeople] = usePeopleState();
 
-    const [people, setPeople] = useStickyState<IPerson[]>("People", [], generator);
     const addNewPerson = (person: string) => {
         if (person === "") {
             console.log("Person is undefined");
@@ -49,7 +46,7 @@ export const SetupPeople = () => {
     };
     const handleOpen = () => setOpen(true);
 
-    const deletePerson = (personToDelete:IPerson) => {
+    const deletePerson = (personToDelete: IPerson) => {
         setPeople(people.filter(person => person.id !== personToDelete.id))
     };
 
@@ -68,7 +65,7 @@ export const SetupPeople = () => {
                             <ListItemText primary={person.name}/>
                             <ListItemSecondaryAction>
                                 <IconButton onClick={() => deletePerson(person)} edge="end" aria-label="delete">
-                                    <DeleteForeverIcon />
+                                    <DeleteForeverIcon/>
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
