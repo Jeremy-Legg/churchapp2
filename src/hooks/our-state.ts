@@ -4,7 +4,7 @@ import {Dispatch, SetStateAction} from "react";
 
 const generator = (allOfThem: any[]) => {
     let allPeople = Array.from(allOfThem);
-    // console.log(`All people to be generated: ${JSON.stringify(allPeople)}`);
+    console.log(`All people to be generated: ${JSON.stringify(allPeople)}`);
     return allPeople.map(t => Object.assign(new Person(""), t));
 };
 
@@ -14,6 +14,6 @@ export function usePeopleState(): [IPerson[], Dispatch<SetStateAction<IPerson[]>
 }
 
 export function useTags(): [string[], Dispatch<SetStateAction<string[]>>] {
-    const [tags, setTags] = useStickyState<string[]>("NightTags", []);
+    const [tags, setTags] = useStickyState<string[]>("EventTags", []);
     return [tags, setTags]
 }

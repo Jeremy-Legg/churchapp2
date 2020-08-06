@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import {usePeopleState, useTags} from "../hooks/our-state";
 import {ChurchEvent} from "../model/IChurchEvent";
 import {Avatar, Card, CardContent, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {IPerson} from "../model/IPerson";
+import {NavBar} from "../components/navigation/nav-bar";
 
 const useStyles = makeStyles({
     root: {
@@ -36,13 +37,13 @@ export const NewEventPage = () => {
     };
 
     useEffect(() => {
-        console.log("render the thing")
+        console.log("render the thing");
     }, [event]);
 
     return (
         <>
-            <h1>New Event</h1>
-            <div>{event.name} - {JSON.stringify(event.people)}</div>
+            <NavBar title={"Create Event"} linkBackTitle={"Home Page"} />
+            <h1>{event.name}</h1>
             {
                 people.map((person, index) => {
                     return (
