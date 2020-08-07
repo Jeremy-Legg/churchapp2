@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 export type NavBarShape = {
     title: string;
     linkBackTitle?: string;
+    onClick?: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -24,13 +25,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const NavBar = (props: NavBarShape) => {
+    const classes = useStyles();
 
     let history = useHistory();
     const handleNavHome = () => {
         history.replace('/');
     }
-
-    const classes = useStyles();
 
     return(
         <div className={classes.root}>

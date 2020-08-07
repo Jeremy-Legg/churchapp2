@@ -2,6 +2,7 @@ import React from 'react';
 import {OurNavButton} from "../components/nav-button";
 import {NewEventButton} from "../components/events/new-event";
 import {useHistory} from "react-router";
+import {ResumeEventButton} from "../components/events/resume-event";
 
 export const HomePage = () => {
 
@@ -19,6 +20,7 @@ export const HomePage = () => {
                         <h1 className="display-3">App Name</h1>
                         <p>Here is some text about what the app is</p>
                         <NewEventButton/>
+                        <ResumeEventButton/>
                     </div>
                 </div>
 
