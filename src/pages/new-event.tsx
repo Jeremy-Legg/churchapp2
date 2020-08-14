@@ -23,65 +23,76 @@ const useStyles = makeStyles({
     }
 });
 
-export const NewEventPage = () => {
+export const NewEventPage = () =>  {
+
     let {eventName} = useParams();
     const classes = useStyles();
 
     let [people] = usePeopleState();
-    let [tags] = useTags();
     let [events, setEvents] = useEventsState();
     let [incompleteEvent, setIncompleteEvent] = useIncompleteEventState();
+    let [peopleInEvent, setPeopleInEvent] =  useState([] as any);
+    //let [event, setEvent] = useState(new ChurchEvent(eventName));
 
-    let [event, setEvent] = useState(new ChurchEvent(eventName));
+
 
 
     const toggleSelected = (person: IPerson) => {
+        if (!isPersonInEvent(person)){
+            let newEvent = [...peopleInEvent, person];
+            setPeopleInEvent(newEvent);
+        }
+        else {
+            setPeopleInEvent(peopleInEvent.filter((p: IPerson) => p !== person))
+        }
         console.log(`toggle ${person.id}`);
-        event.togglePersonInEvent(person);
-        setEvent(event);
+        handleIncompleteEvent();
     };
 
-    const resumeNight = () => {
-        console.log(incompleteEvent);
-        console.log(event);
-        if (!incompleteEvent.complete && incompleteEvent.name !== "") {
-            setEvent(incompleteEvent);
-        }
-        console.log(event);
-    }
 
-    useEffect(() => {
-        console.log("render the thing");
-        resumeNight();
-    }, [event]);
 
     const handleEndNight = () => {
-        event.complete = true;
-        let newEvents = [...events, event];
-        setEvents(newEvents);
+        let newEvent = new ChurchEvent(eventName);
+        newEvent.people = peopleInEvent;
+        newEvent.complete = true;
+        let allEvents = [...events, newEvent];
+        setEvents(allEvents);
     }
 
+
+
     const handleIncompleteEvent = () => {
-        setIncompleteEvent(event)
+        let eventToSave = new ChurchEvent(eventName);
+        eventToSave.people = peopleInEvent;
+        console.log(eventToSave);
+        setIncompleteEvent(eventToSave);
+    }
+
+
+    const isPersonInEvent = (person: IPerson) => {
+        return peopleInEvent.indexOf(person) !== -1;
     }
 
     return (
+
         <>
             <NavBar title={"Create Event"} linkBackTitle={"Home Page"} onClick={() => handleIncompleteEvent()}/>
-            <h1>{event.name}</h1>
+
+            <h1>{eventName}</h1>
             {
                 people.map((person, index) => {
                     return (
                         <React.Fragment key={index}>
-                            {event.isPersonInEvent(person) && <h2>SELECTED</h2>}
                             <Card key={index} className={classes.root} variant="outlined"
                                   onClick={() => toggleSelected(person)}
                             >
                                 <Avatar>{person.firstLetter()}</Avatar>
                                 <CardContent>
+                                    {!isPersonInEvent(person) &&
                                     <Typography className={classes.title}>{person.name}</Typography>
-                                    {event.isPersonInEvent(person) &&
-                                    <Typography className={classes.title}>SELECTED</Typography>
+                                    }
+                                    {isPersonInEvent(person) &&
+                                    <Typography className={classes.selected}>{person.name}</Typography>
                                     }
                                 </CardContent>
                             </Card>
