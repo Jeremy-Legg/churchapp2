@@ -64,7 +64,6 @@ export const NewEventPage = () =>  {
     const handleIncompleteEvent = () => {
         let eventToSave = new ChurchEvent(eventName);
         eventToSave.people = peopleInEvent;
-        console.log(eventToSave);
         setIncompleteEvent(eventToSave);
     }
 
