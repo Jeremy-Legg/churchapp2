@@ -3,7 +3,7 @@ import {Avatar, Button, Chip, createStyles, Theme} from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {makeStyles} from "@material-ui/core/styles";
 import {SSDialog} from "../single-string-dialog";
-import {useTags} from "../../hooks/data-state";
+import {useTags} from "../../hooks/our-state";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
