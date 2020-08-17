@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {useParams, useHistory} from 'react-router-dom';
-import {useEventsState, useIncompleteEventState, usePeopleState, useTags} from "../hooks/our-state";
+import {useEventsState, useIncompleteEventState, usePeopleState, useTags} from "../hooks/data-state";
 import {ChurchEvent, ChurchEvents, IChurchEvent, IChurchEvents} from "../model/IChurchEvent";
 import {Avatar, Card, CardContent, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {IPerson, Person} from "../model/IPerson";
 import {NavBar} from "../components/navigation/nav-bar";
 import {OurNavButton} from "../components/nav-button";
-
+import {useInstanceState} from "../hooks/object-state";
 
 const useStyles = makeStyles({
     root: {
@@ -27,53 +27,40 @@ export const NewEventPage = () =>  {
 
     let {eventName} = useParams();
     const classes = useStyles();
+    let history = useHistory();
 
     let [people] = usePeopleState();
     let [events, setEvents] = useEventsState();
+    let [event, setEvent] = useInstanceState(new ChurchEvent(eventName));
     let [incompleteEvent, setIncompleteEvent] = useIncompleteEventState();
-    let [peopleInEvent, setPeopleInEvent] =  useState([] as any);
-    //let [event, setEvent] = useState(new ChurchEvent(eventName));
-
-
-
+/*
+    if (!incompleteEvent.complete){
+        setEvent(incompleteEvent);
+    }
+ */
 
     const toggleSelected = (person: IPerson) => {
-        if (!isPersonInEvent(person)){
-            let newEvent = [...peopleInEvent, person];
-            setPeopleInEvent(newEvent);
-        }
-        else {
-            setPeopleInEvent(peopleInEvent.filter((p: IPerson) => p !== person))
-        }
-        console.log(`toggle ${person.id}`);
-        handleIncompleteEvent();
+        event.togglePersonInEvent(person);
+        setEvent(event);
     };
 
-
-
     const handleEndNight = () => {
-        let newEvent = new ChurchEvent(eventName);
-        newEvent.people = peopleInEvent;
-        newEvent.complete = true;
-        let allEvents = [...events, newEvent];
+        event.complete = true;
+        let allEvents = [...events, event];
         setEvents(allEvents);
+        setIncompleteEvent(event);
+        history.replace('/');
     }
-
-
 
     const handleIncompleteEvent = () => {
-        let eventToSave = new ChurchEvent(eventName);
-        eventToSave.people = peopleInEvent;
-        setIncompleteEvent(eventToSave);
+        setIncompleteEvent(event);
     }
 
-
     const isPersonInEvent = (person: IPerson) => {
-        return peopleInEvent.indexOf(person) !== -1;
+        return event.people.indexOf(person) !== -1;
     }
 
     return (
-
         <>
             <NavBar title={"Create Event"} linkBackTitle={"Home Page"} onClick={() => handleIncompleteEvent()}/>
 
