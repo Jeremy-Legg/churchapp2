@@ -1,20 +1,21 @@
-import React, {useState} from "react";
+import React from "react";
 import {OurNavButton} from "../nav-button";
-import {SSDialog} from "../single-string-dialog";
 import { useHistory } from "react-router-dom";
-import {useEventsState, useIncompleteEventState} from "../../hooks/our-state";
+import {findFirstIncompleteEvent, useEventsState} from "../../hooks/data-state";
 
 export const ResumeEventButton = () => {
-
-    const [incompleteEvent] = useIncompleteEventState();
-
     let history = useHistory();
-    const handleResumeEvent = (eventName: string) => {
-        history.push(`/event/${eventName}`)
+
+    let [events, setEvents] = useEventsState();
+    let eventBeingEdited = findFirstIncompleteEvent(events);
+
+    const justGoThere = () => {
+        history.push(`/event/${eventBeingEdited?.name}`)
     };
+
     return (
         <div>
-            <OurNavButton title="Resume Night" onClick={() => handleResumeEvent(incompleteEvent.name)}/>
+            <OurNavButton title="Resume Night" onClick={() => justGoThere()}/>
         </div>
     )
 };

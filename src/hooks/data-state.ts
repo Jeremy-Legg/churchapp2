@@ -3,19 +3,19 @@ import {useStickyState} from "./sticky";
 import {Dispatch, SetStateAction} from "react";
 import {ChurchEvent, IChurchEvent} from "../model/IChurchEvent";
 
-const peopleGenerator = (allOfThem: any[]) => {
+const peopleObjectFactory = (allOfThem: any[]) => {
     let allPeople = Array.from(allOfThem);
     console.log(`All people to be generated: ${JSON.stringify(allPeople)}`);
     return allPeople.map(t => Object.assign(new Person(""), t));
 };
 
-const eventGenerator = (allOfThem: any[]) => {
+const eventObjectFactory = (allOfThem: any[]) => {
     let allEvents = Array.from(allOfThem);
-    return allEvents.map(t => Object.assign(new ChurchEvent(""), t));
-}
+    return allEvents.map(t => Object.assign(new ChurchEvent(), t));
+};
 
 export function usePeopleState(): [IPerson[], Dispatch<SetStateAction<IPerson[]>>] {
-    const [people, setPeople] = useStickyState<IPerson[]>("People", [], peopleGenerator);
+    const [people, setPeople] = useStickyState<IPerson[]>("People", [], peopleObjectFactory);
     return [people, setPeople];
 }
 
@@ -25,7 +25,7 @@ export function useTags(): [string[], Dispatch<SetStateAction<string[]>>] {
 }
 
 export function useEventsState(): [IChurchEvent[], Dispatch<SetStateAction<IChurchEvent[]>>]{
-    const [events, setEvents] = useStickyState<IChurchEvent[]>("Events", [], eventGenerator)
+    const [events, setEvents] = useStickyState<IChurchEvent[]>("Events", [], eventObjectFactory)
     return [events, setEvents];
 }
 
@@ -33,3 +33,11 @@ export function useIncompleteEventState(): [ChurchEvent, Dispatch<SetStateAction
     const [incompleteEvent, setIncompleteEvent] = useStickyState<ChurchEvent>("IncompleteEvent", new ChurchEvent())
     return [incompleteEvent, setIncompleteEvent];
 }
+
+export const findFirstIncompleteEvent = (events:IChurchEvent[]) : IChurchEvent | null => {
+    let incompleteEvents = events.filter(e => !e.complete);
+    if (incompleteEvents.length === 0) {
+        return null;
+    }
+    return incompleteEvents[0]
+};

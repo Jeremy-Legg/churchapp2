@@ -7,7 +7,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemSecondaryAction,
-    ListItemText,
+    ListItemText, Switch,
     Theme
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
@@ -16,7 +16,7 @@ import {SSDialog} from "../single-string-dialog";
 import {useStickyState} from "../../hooks/sticky";
 import {IPerson, Person} from "../../model/IPerson";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import {usePeopleState} from "../../hooks/our-state";
+import {usePeopleState} from "../../hooks/data-state";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -50,6 +50,11 @@ export const SetupPeople = () => {
         setPeople(people.filter(person => person.id !== personToDelete.id))
     };
 
+    const toggleRegularPerson = (person:IPerson) => {
+        person.toggleRegular();
+        setPeople(people);
+    };
+
     return (<div>
 
         <h1>People</h1>
@@ -62,12 +67,20 @@ export const SetupPeople = () => {
                                 <Avatar>{person.firstLetter()}</Avatar>
                             </ListItemAvatar>
                             {/*<ListItemText primary={person.name} secondary={person.id}/>*/}
+                            <Switch
+                                checked={person.regular}
+                                onChange={() => toggleRegularPerson(person)}
+                                color="primary"
+                                name="checkedB"
+                                inputProps={{ 'aria-label': 'primary checkbox' }}
+                            />
                             <ListItemText primary={person.name}/>
                             <ListItemSecondaryAction>
                                 <IconButton onClick={() => deletePerson(person)} edge="end" aria-label="delete">
                                     <DeleteForeverIcon/>
                                 </IconButton>
                             </ListItemSecondaryAction>
+
                         </ListItem>
                     )
                 })

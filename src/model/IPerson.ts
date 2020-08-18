@@ -3,13 +3,17 @@ import {v4 as uuidv4} from 'uuid';
 export interface IPerson {
     name: string;
     id: string;
+    regular: boolean;
 
     firstLetter(): string;
+
+    toggleRegular() : void;
 }
 
 export class Person implements IPerson {
     id: string;
     name: string;
+    regular: boolean = false;
 
     constructor(their_name: string) {
         this.id = uuidv4();
@@ -27,6 +31,10 @@ export class Person implements IPerson {
             return this.name[0].toUpperCase();
         }
         return "";
+    }
+
+    public toggleRegular() {
+        this.regular = !this.regular;
     }
 
 }

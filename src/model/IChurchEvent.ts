@@ -40,18 +40,19 @@ export class ChurchEvent implements IChurchEvent {
     }
 
     private indexOfPerson(person: IPerson) {
-        return this.people.findIndex(p => p.id === person.id);
+        let findIndex = this.people.findIndex(p => p.id === person.id);
+        return findIndex;
     }
 
     public togglePersonInEvent(person: IPerson): void {
         if (this.isPersonInEvent(person)) {
             let index = this.indexOfPerson(person);
             if (index !== -1) {
-                console.log(`remove ${person.name} to event`);
+                // console.log(`remove ${person.name} to event`);
                 this.people.splice(index, 1)
             }
         } else {
-            console.log(`add ${person.name} to event`);
+            // console.log(`add ${person.name} to event`);
             this.people.push(person)
 
         }
