@@ -3,7 +3,7 @@ import './App.css';
 import {HomePage} from "./pages/homepage";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {SetUpPage} from "./pages/setup";
-import {NewEventPage} from "./pages/new-event";
+import {EventEditorPage} from "./pages/new-event";
 
 function App() {
     return (
@@ -11,7 +11,7 @@ function App() {
             <div className="App">
                 <Switch>
                     <Route path={"/setup"}><SetUpPage/></Route>
-                    <Route path={"/event/:eventName"}><NewEventPage/></Route>
+                    <Route path={"/event/:eventName"}><EventEditorPage/></Route>
                     <Route path={"/"}><HomePage/></Route>
                 </Switch>
             </div>

@@ -1,6 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useParams, useHistory} from 'react-router-dom';
-import {useEventsState, useIncompleteEventState, usePeopleState, useTags} from "../hooks/data-state";
+import {
+    findFirstIncompleteEvent,
+    useEventsState,
+    useIncompleteEventState,
+    usePeopleState,
+    useTags
+} from "../hooks/data-state";
 import {ChurchEvent, ChurchEvents, IChurchEvent, IChurchEvents} from "../model/IChurchEvent";
 import {Avatar, Card, CardContent, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
@@ -23,7 +29,7 @@ const useStyles = makeStyles({
     }
 });
 
-export const NewEventPage = () =>  {
+export const EventEditorPage = () => {
 
     let {eventName} = useParams();
     const classes = useStyles();
@@ -31,40 +37,39 @@ export const NewEventPage = () =>  {
 
     let [people] = usePeopleState();
     let [events, setEvents] = useEventsState();
-    let [event, setEvent] = useInstanceState(new ChurchEvent(eventName));
-    let [incompleteEvent, setIncompleteEvent] = useIncompleteEventState();
-/*
-    if (!incompleteEvent.complete){
-        setEvent(incompleteEvent);
+    let eventBeingEdited = findFirstIncompleteEvent(events);
+
+    if (eventBeingEdited === null) {
+        eventBeingEdited = new ChurchEvent(eventName);
+        setEvents([...events, eventBeingEdited])
     }
- */
 
     const toggleSelected = (person: IPerson) => {
-        event.togglePersonInEvent(person);
-        setEvent(event);
+        eventBeingEdited!.togglePersonInEvent(person);
+        setEvents(events);
     };
 
     const handleEndNight = () => {
-        event.complete = true;
-        let allEvents = [...events, event];
-        setEvents(allEvents);
-        setIncompleteEvent(event);
+        eventBeingEdited!.complete = true;
+        setEvents(events);
         history.replace('/');
-    }
+    };
 
-    const handleIncompleteEvent = () => {
-        setIncompleteEvent(event);
-    }
+    const handleDeleteNight = () => {
+        let eventsToKeep = events.filter(e => e.id !== eventBeingEdited?.id);
+        setEvents(eventsToKeep);
+        history.replace('/');
+    };
 
-    const isPersonInEvent = (person: IPerson) => {
-        return event.people.indexOf(person) !== -1;
-    }
+    const handleUserGoBack = () => {
+        // setIncompleteEvent(event);
+    };
 
     return (
         <>
-            <NavBar title={"Create Event"} linkBackTitle={"Home Page"} onClick={() => handleIncompleteEvent()}/>
+            <NavBar title={"Create Event"} linkBackTitle={"Home Page"} onClick={() => handleUserGoBack()}/>
 
-            <h1>{eventName}</h1>
+            <h1>{eventBeingEdited?.name}</h1>
             {
                 people.map((person, index) => {
                     return (
@@ -74,10 +79,10 @@ export const NewEventPage = () =>  {
                             >
                                 <Avatar>{person.firstLetter()}</Avatar>
                                 <CardContent>
-                                    {!isPersonInEvent(person) &&
+                                    {!eventBeingEdited?.isPersonInEvent(person) &&
                                     <Typography className={classes.title}>{person.name}</Typography>
                                     }
-                                    {isPersonInEvent(person) &&
+                                    {eventBeingEdited?.isPersonInEvent(person) &&
                                     <Typography className={classes.selected}>{person.name}</Typography>
                                     }
                                 </CardContent>
@@ -87,6 +92,8 @@ export const NewEventPage = () =>  {
                 })
             }
             <OurNavButton title={"End Night"} onClick={() => handleEndNight()}/>
+            <OurNavButton title={"Delete Night"} onClick={() => handleDeleteNight()}/>
+
         </>
     );
 };

@@ -3,13 +3,16 @@ import {OurNavButton} from "../components/nav-button";
 import {NewEventButton} from "../components/events/new-event";
 import {useHistory} from "react-router";
 import {ResumeEventButton} from "../components/events/resume-event";
+import {findFirstIncompleteEvent, useEventsState} from "../hooks/data-state";
 
 export const HomePage = () => {
+    let [events] = useEventsState();
+    let eventBeingEdited = findFirstIncompleteEvent(events);
 
     let history = useHistory();
     const handleNavigation = (destination : string) => {
             history.push(`/${destination}`);
-    }
+    };
 
     return (
         <div>
@@ -19,8 +22,12 @@ export const HomePage = () => {
                     <div className="container">
                         <h1 className="display-3">App Name</h1>
                         <p>Here is some text about what the app is</p>
-                        <NewEventButton/>
-                        <ResumeEventButton/>
+                        {
+                            eventBeingEdited && <ResumeEventButton/>
+                        }
+                        {
+                            !eventBeingEdited && <NewEventButton/>
+                        }
                     </div>
                 </div>
 
