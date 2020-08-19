@@ -8,26 +8,44 @@ import {
     useTags
 } from "../hooks/data-state";
 import {ChurchEvent, ChurchEvents, IChurchEvent, IChurchEvents} from "../model/IChurchEvent";
-import {Avatar, Card, CardContent, Typography} from "@material-ui/core";
+import {Avatar, Card, CardContent, Container, Grid, Paper, Typography} from "@material-ui/core";
+import { createStyles, Theme } from '@material-ui/core/styles';
+
 import {makeStyles} from "@material-ui/core/styles";
 import {IPerson, Person} from "../model/IPerson";
 import {NavBar} from "../components/navigation/nav-bar";
 import {OurNavButton} from "../components/nav-button";
 import {useInstanceState} from "../hooks/object-state";
 
-const useStyles = makeStyles({
-    root: {
-        minWidth: 275,
-        textAlign: 'center',
-    },
-    title: {
-        fontSize: 16,
-    },
-    selected: {
-        background: 'green',
-        color: 'white',
-    }
-});
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            flexGrow: 1,
+        },
+        name: {
+            color: '#ffffff',
+            paddingLeft: '16px',
+            paddingRight: '16px',
+            marginLeft: '0.5rem',
+        },
+        notInEvent: {
+            fontSize: '18px',
+            padding: theme.spacing(1),
+            textAlign: 'center',
+            color: '#00203b',
+        },
+        inEvent: {
+            fontSize: '18px',
+            padding: theme.spacing(1),
+            textAlign: 'center',
+            color: '#000000',
+            backgroundColor: '#d4ffe0'
+        },
+        container: {
+            padding: '10px',
+        },
+    }),
+);
 
 export const EventEditorPage = () => {
 
@@ -69,28 +87,37 @@ export const EventEditorPage = () => {
         <>
             <NavBar title={"Create Event"} linkBackTitle={"Home Page"} onClick={() => handleUserGoBack()}/>
 
-            <h1>{eventBeingEdited?.name}</h1>
-            {
-                people.map((person, index) => {
-                    return (
-                        <React.Fragment key={index}>
-                            <Card key={index} className={classes.root} variant="outlined"
-                                  onClick={() => toggleSelected(person)}
-                            >
-                                <Avatar>{person.firstLetter()}</Avatar>
-                                <CardContent>
-                                    {!eventBeingEdited?.isPersonInEvent(person) &&
-                                    <Typography className={classes.title}>{person.name}</Typography>
-                                    }
-                                    {eventBeingEdited?.isPersonInEvent(person) &&
-                                    <Typography className={classes.selected}>{person.name}</Typography>
-                                    }
-                                </CardContent>
-                            </Card>
-                        </React.Fragment>
-                    )
-                })
-            }
+            <h1 className={classes.name}>{eventBeingEdited?.name}</h1>
+            <Container className={classes.container}>
+                <Grid className={classes.root} container spacing={2}>
+                {
+
+                    people.map((person, index) => {
+                        return (
+                            <React.Fragment key={index}>
+
+
+
+                                    <Grid item xs={6} sm={6}  onClick={() => toggleSelected(person)}>
+                                        {!eventBeingEdited?.isPersonInEvent(person) &&
+                                        <Paper className={classes.notInEvent}>{person.name}</Paper>
+                                        }
+                                        {eventBeingEdited?.isPersonInEvent(person) &&
+                                        <Paper className={classes.inEvent}>{person.name}</Paper>
+                                        }
+                                    </Grid>
+
+
+
+
+
+
+                            </React.Fragment>
+                        )
+                    })
+                }
+                </Grid>
+            </Container>
             <OurNavButton title={"End Night"} onClick={() => handleEndNight()}/>
             <OurNavButton title={"Delete Night"} onClick={() => handleDeleteNight()}/>
 

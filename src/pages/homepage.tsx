@@ -4,8 +4,31 @@ import {NewEventButton} from "../components/events/new-event";
 import {useHistory} from "react-router";
 import {ResumeEventButton} from "../components/events/resume-event";
 import {findFirstIncompleteEvent, useEventsState} from "../hooks/data-state";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import {Avatar, Button, Card, CardActions, CardContent, Grid, Paper, Typography} from "@material-ui/core";
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            minWidth: 275,
+            margin: 5,
+        },
+        bullet: {
+            display: 'inline-block',
+            margin: '0 2px',
+            transform: 'scale(0.8)',
+        },
+        title: {
+            fontSize: 14,
+        },
+        pos: {
+            marginBottom: 12,
+        },
+    }),
+);
 
 export const HomePage = () => {
+    const classes = useStyles();
     let [events] = useEventsState();
     let eventBeingEdited = findFirstIncompleteEvent(events);
 
@@ -17,45 +40,69 @@ export const HomePage = () => {
     return (
         <div>
             <main role="main">
-
-                <div className="jumbotron">
-                    <div className="container">
-                        <h1 className="display-3">App Name</h1>
-                        <p>Here is some text about what the app is</p>
+                <Card className={classes.root} variant="outlined">
+                    <CardContent>
+                        <Typography variant="h4" component="h1">
+                            Church App
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            Here is some text about what the app is
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
                         {
                             eventBeingEdited && <ResumeEventButton/>
                         }
                         {
                             !eventBeingEdited && <NewEventButton/>
                         }
-                    </div>
-                </div>
+                    </CardActions>
+                </Card>
 
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <h2>Reporting</h2>
-                            <p>This is where you can view your reports. Reports are either based on a person, particular
-                                night, or selected period of nights </p>
-                            <OurNavButton  title={"Reporting"}/>
-                        </div>
-                        <div className="col-md-4">
-                            <h2>Setup</h2>
-                            <p>This is where you handle the management of the app. You can add/remove people + whatever
-                                else
-                                i think of </p>
-                            <OurNavButton onClick={() => handleNavigation("setup")} title={"Setup"}/>
+                <Card className={classes.root} variant="outlined">
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            Reporting
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            This is where you can view your reports. Reports are either based on a person, particular
+                            night, or selected period of nights
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <OurNavButton  title={"Reporting"}/>
+                    </CardActions>
+                </Card>
 
-                        </div>
-                        <div className="col-md-4">
-                            <h2>Options</h2>
-                            <p>Here are some options for how you would prefer the app to be. This is a future idea for
-                                things like dark mode + other stuff</p>
-                            <OurNavButton title={"Options"}/>
-                        </div>
-                    </div>
-                    <hr/>
-                </div>
+                <Card className={classes.root} variant="outlined">
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            Setup
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            This is where you handle the management of the app. You can add/remove people + whatever
+                            else
+                            i think of
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <OurNavButton onClick={() => handleNavigation("setup")} title={"Setup"}/>
+                    </CardActions>
+                </Card>
+                <Card className={classes.root} variant="outlined">
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            Options
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            Here are some options for how you would prefer the app to be. This is a future idea for
+                            things like dark mode + other stuff
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <OurNavButton  title={"Options"}/>
+                    </CardActions>
+                </Card>
             </main>
         </div>
     )

@@ -1,8 +1,8 @@
 import React from "react";
 import {AppBar, Button, createStyles, IconButton, Theme, Typography} from "@material-ui/core";
 import Toolbar from '@material-ui/core/Toolbar';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {makeStyles} from "@material-ui/core/styles";
+import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
 import { useHistory } from "react-router-dom";
 
 export type NavBarShape = {
@@ -17,9 +17,13 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
         },
         title: {
+            backgroundColor: '#00203b',
             flexGrow: 1,
             marginLeft: '0.5rem',
         },
+        bar: {
+            backgroundColor: '#00203b',
+        }
 
     }),
 );
@@ -34,12 +38,12 @@ export const NavBar = (props: NavBarShape) => {
 
     return(
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.bar}>
                 <Toolbar>
                     <Typography variant="h4" className={classes.title}>
                         {props.title}
                     </Typography>
-                    <Button onClick={() => handleNavHome()} color="inherit"> <ArrowBackIosIcon/> Home Page</Button>
+                    <Button onClick={() => handleNavHome()} color="inherit"> <ChevronLeftRoundedIcon/> Home Page </Button>
                 </Toolbar>
             </AppBar>
         </div>

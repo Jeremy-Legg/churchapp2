@@ -27,7 +27,7 @@ export const SSDialog = (props: SSDialogProps) => {
                     onKeyPress={(e) => {
                         if (e.key === "Enter") {
                             if (props.ok !== undefined) {
-                                props.ok(userValue)
+                                props.ok(userValue.charAt(0).toUpperCase() + userValue.slice(1));
                             }
                         }
                     }}
