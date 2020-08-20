@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',
-            maxWidth: 360,
             backgroundColor: theme.palette.background.paper,
         },
     }),
@@ -55,10 +54,10 @@ export const SetupPeople = () => {
         setPeople(people);
     };
 
-    return (<div>
+    return (<div className={classes.root}>
 
         <h1>People</h1>
-        <List className={classes.root}>
+        <List >
             {
                 people.map((person, index) => {
                     return (

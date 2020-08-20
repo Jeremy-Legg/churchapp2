@@ -16,6 +16,7 @@ import {IPerson, Person} from "../model/IPerson";
 import {NavBar} from "../components/navigation/nav-bar";
 import {OurNavButton} from "../components/nav-button";
 import {useInstanceState} from "../hooks/object-state";
+import {OurNonNavButton} from "../components/non-nav-button";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -43,6 +44,24 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         container: {
             padding: '10px',
+        },
+        endNight: {
+            backgroundColor: '#00203b',
+            '&:hover': {
+                backgroundColor: '#000000',
+            },
+            display: 'flex',
+            float: 'right',
+            border: '1px solid',
+        },
+        deleteNight: {
+            backgroundColor: '#00203b',
+            '&:hover': {
+                backgroundColor: '#000000',
+            },
+            display: 'flex',
+            float: 'left',
+            border: '1px solid',
         },
     }),
 );
@@ -118,9 +137,11 @@ export const EventEditorPage = () => {
                 }
                 </Grid>
             </Container>
-            <OurNavButton title={"End Night"} onClick={() => handleEndNight()}/>
-            <OurNavButton title={"Delete Night"} onClick={() => handleDeleteNight()}/>
 
+            <Container>
+            <OurNonNavButton title={"End Night"} onClick={() => handleEndNight()} className={classes.endNight}/>
+            <OurNonNavButton title={"Delete Night"} onClick={() => handleDeleteNight()} className={classes.deleteNight}/>
+            </Container>
         </>
     );
 };

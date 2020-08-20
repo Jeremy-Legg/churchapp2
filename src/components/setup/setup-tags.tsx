@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 margin: theme.spacing(0.5),
             },
         },
+        colour: {
+            backgroundColor: theme.palette.background.paper,
+        }
     }),
 );
 
@@ -43,7 +46,7 @@ export const SetupTags = () => {
     };
 
     return (
-        <div>
+        <div className={classes.colour}>
             <h1>Night Tags</h1>
             <div className={classes.root}>
                 {
