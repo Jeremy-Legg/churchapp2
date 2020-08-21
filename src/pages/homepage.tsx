@@ -14,6 +14,8 @@ import {NewEventButton} from "../components/events/new-event";
 import {findFirstIncompleteEvent, useEventsState} from "../hooks/data-state";
 import {OurNavButton} from "../components/nav-button";
 import {GetEventName} from "../components/events/get-event-name";
+import {useAppDispatch} from "../state/store";
+import uiSlice from "../state/ui-state";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const HomePage = () => {
     const classes = useStyles();
     let [pageName, setPageName] = useState("home");
-    const [open, setOpen] = useState(false);
+    let dispatch = useAppDispatch();
 
     let [events] = useEventsState();
     let eventBeingEdited = findFirstIncompleteEvent(events);
@@ -71,7 +73,7 @@ export const HomePage = () => {
                             if(eventBeingEdited) {
                                 justGoThere()
                             } else {
-                                setOpen(true)
+                                dispatch(uiSlice.actions.openDialog())
                             }
                             break;
                         default:
@@ -84,10 +86,7 @@ export const HomePage = () => {
             >
                 <BottomNavigationAction label="Home" value="" icon={<HomeRoundedIcon/>}/>
                 <BottomNavigationAction label="Events" value="events" icon={<EventNoteRoundedIcon/>}/>
-                {
-                    !eventBeingEdited &&
-                        <GetEventName open={open} setOpen={setOpen}/>
-                }
+                <GetEventName/>
                 <BottomNavigationAction label="Reporting" value="reports" icon={<TimelineRoundedIcon/>}/>
                 <BottomNavigationAction label="Setup" value="setup" icon={<SettingsRoundedIcon/>}/>
             </BottomNavigation>

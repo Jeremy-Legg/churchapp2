@@ -1,22 +1,26 @@
 import React from "react";
 import {SSDialog} from "../single-string-dialog";
 import {useHistory} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {RootState, useAppDispatch} from "../../state/store";
+import uiSlice from "../../state/ui-state";
 
-export type GetEventNameProps = {
-    open: boolean,
-    setOpen: (flag: boolean) => void
-}
-
-export const GetEventName = (props: GetEventNameProps) => {
+export const GetEventName = () => {
     let history = useHistory();
+    let uiState = useSelector((state: RootState) => state.ui);
+    let dispatch = useAppDispatch();
+
     const handleOk = (eventName: string) => {
         history.push(`/event/${eventName}`)
     };
+
     return (
         <SSDialog title={"Create A New Event"}
                   label={"Event Name"}
-                  open={props.open}
-                  cancel={() => props.setOpen(false)}
+                  open={uiState.createEventDialogOpen}
+                  cancel={() => {
+                      dispatch(uiSlice.actions.closeDialog())
+                  }}
                   ok={handleOk}
         />
     )

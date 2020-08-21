@@ -80,7 +80,7 @@ export class ChurchEvent implements IChurchEvent {
         // } else if(datePart instanceof Date) {
         //     // leave alone
         // } else {
-        //     throw new Error("Unexpected data in event.date while reconstructing from store")
+        //     throw new Error("Unexpected data in event.date while reconstructing from state")
         // }
         return event
     }

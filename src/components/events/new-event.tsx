@@ -1,14 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 import {OurNavButton} from "../nav-button";
 import {GetEventName} from "./get-event-name";
+import {useAppDispatch} from "../../state/store";
+import uiSlice from "../../state/ui-state";
 
 export const NewEventButton = () => {
-    const [open, setOpen] = useState(false);
-
+    let dispatch = useAppDispatch();
     return (
         <div>
-            <OurNavButton title="Create Night" onClick={() => setOpen(true)}/>
-            <GetEventName open={open} setOpen={setOpen}/>
+            <OurNavButton title="Create Night" onClick={() => dispatch(uiSlice.actions.openDialog())}/>
+            <GetEventName/>
         </div>
     )
 };
