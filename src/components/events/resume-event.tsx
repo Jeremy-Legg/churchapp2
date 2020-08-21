@@ -6,7 +6,7 @@ import {findFirstIncompleteEvent, useEventsState} from "../../hooks/data-state";
 export const ResumeEventButton = () => {
     let history = useHistory();
 
-    let [events, setEvents] = useEventsState();
+    let [events] = useEventsState();
     let eventBeingEdited = findFirstIncompleteEvent(events);
 
     const justGoThere = () => {

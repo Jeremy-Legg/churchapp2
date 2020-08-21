@@ -1,9 +1,9 @@
 import React from "react";
-import {AppBar, Button, createStyles, IconButton, Theme, Typography} from "@material-ui/core";
+import {AppBar, Button, createStyles, Theme, Typography} from "@material-ui/core";
 import Toolbar from '@material-ui/core/Toolbar';
 import {makeStyles} from "@material-ui/core/styles";
 import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 export type NavBarShape = {
     title: string;
@@ -34,16 +34,19 @@ export const NavBar = (props: NavBarShape) => {
     let history = useHistory();
     const handleNavHome = () => {
         history.replace('/');
-    }
+    };
 
-    return(
+    return (
         <div className={classes.root}>
             <AppBar position="static" className={classes.bar}>
                 <Toolbar>
                     <Typography variant="h4" className={classes.title}>
                         {props.title}
                     </Typography>
-                    <Button onClick={() => handleNavHome()} color="inherit"> <ChevronLeftRoundedIcon/> Home Page </Button>
+                    {props.onClick &&
+                    <Button onClick={() => handleNavHome()} color="inherit">
+                        <ChevronLeftRoundedIcon/>{props.linkBackTitle}</Button>
+                    }
                 </Toolbar>
             </AppBar>
         </div>

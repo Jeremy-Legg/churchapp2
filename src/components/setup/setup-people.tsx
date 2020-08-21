@@ -2,18 +2,19 @@ import React, {useState} from "react";
 import {
     Avatar,
     Button,
-    createStyles, IconButton,
+    createStyles,
+    IconButton,
     List,
     ListItem,
     ListItemAvatar,
     ListItemSecondaryAction,
-    ListItemText, Switch,
+    ListItemText,
+    Switch,
     Theme
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {SSDialog} from "../single-string-dialog";
-import {useStickyState} from "../../hooks/sticky";
 import {IPerson, Person} from "../../model/IPerson";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import {usePeopleState} from "../../hooks/data-state";

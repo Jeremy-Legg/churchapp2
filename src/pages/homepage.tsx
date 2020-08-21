@@ -1,11 +1,19 @@
-import React from 'react';
-import {OurNavButton} from "../components/nav-button";
-import {NewEventButton} from "../components/events/new-event";
+import React, {useState} from 'react';
 import {useHistory} from "react-router";
-import {ResumeEventButton} from "../components/events/resume-event";
-import {findFirstIncompleteEvent, useEventsState} from "../hooks/data-state";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {Avatar, Button, Card, CardActions, CardContent, Grid, Paper, Typography} from "@material-ui/core";
+import {BottomNavigation, BottomNavigationAction, Box, CardActions} from "@material-ui/core";
+import {NavBar} from "../components/navigation/nav-bar";
+import {LastEvent} from "../components/events/last-event";
+import {LastMonth} from "../components/events/last-month";
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import EventNoteRoundedIcon from '@material-ui/icons/EventNoteRounded';
+import TimelineRoundedIcon from '@material-ui/icons/TimelineRounded';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
+import {ResumeEventButton} from "../components/events/resume-event";
+import {NewEventButton} from "../components/events/new-event";
+import {findFirstIncompleteEvent, useEventsState} from "../hooks/data-state";
+import {OurNavButton} from "../components/nav-button";
+import {GetEventName} from "../components/events/get-event-name";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,81 +37,60 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const HomePage = () => {
     const classes = useStyles();
+    let [pageName, setPageName] = useState("home");
+    const [open, setOpen] = useState(false);
+
     let [events] = useEventsState();
     let eventBeingEdited = findFirstIncompleteEvent(events);
 
     let history = useHistory();
-    const handleNavigation = (destination : string) => {
-            history.push(`/${destination}`);
+    const handleNavigation = (destination: string) => {
+        history.push(`/${destination}`);
+    };
+
+    const justGoThere = () => {
+        history.push(`/event/${eventBeingEdited?.name}`)
     };
 
     return (
         <div>
-            <main role="main">
-                <Card className={classes.root} variant="outlined">
-                    <CardContent>
-                        <Typography variant="h4" component="h1">
-                            Church App
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            Here is some text about what the app is
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        {
-                            eventBeingEdited && <ResumeEventButton/>
-                        }
-                        {
-                            !eventBeingEdited && <NewEventButton/>
-                        }
-                    </CardActions>
-                </Card>
-
-                <Card className={classes.root} variant="outlined">
-                    <CardContent>
-                        <Typography variant="h5" component="h2">
-                            Reporting
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            This is where you can view your reports. Reports are either based on a person, particular
-                            night, or selected period of nights
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <OurNavButton  title={"Reporting"}/>
-                    </CardActions>
-                </Card>
-
-                <Card className={classes.root} variant="outlined">
-                    <CardContent>
-                        <Typography variant="h5" component="h2">
-                            Setup
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            This is where you handle the management of the app. You can add/remove people + whatever
-                            else
-                            i think of
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <OurNavButton onClick={() => handleNavigation("setup")} title={"Setup"}/>
-                    </CardActions>
-                </Card>
-                <Card className={classes.root} variant="outlined">
-                    <CardContent>
-                        <Typography variant="h5" component="h2">
-                            Options
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            Here are some options for how you would prefer the app to be. This is a future idea for
-                            things like dark mode + other stuff
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <OurNavButton  title={"Options"}/>
-                    </CardActions>
-                </Card>
-            </main>
+            <div>
+                <NavBar title={"Dashboard"}/>
+            </div>
+            <div>
+                <LastEvent/>
+                <LastMonth/>
+            </div>
+            <BottomNavigation
+                value={pageName}
+                onChange={(event, newValue) => {
+                    setPageName(newValue);
+                    switch (newValue) {
+                        case "events":
+                            // do magic
+                            if(eventBeingEdited) {
+                                justGoThere()
+                            } else {
+                                setOpen(true)
+                            }
+                            break;
+                        default:
+                            // assume its a route path
+                            handleNavigation(newValue);
+                    }
+                }}
+                showLabels
+                className={classes.root}
+            >
+                <BottomNavigationAction label="Home" value="" icon={<HomeRoundedIcon/>}/>
+                <BottomNavigationAction label="Events" value="events" icon={<EventNoteRoundedIcon/>}/>
+                {
+                    !eventBeingEdited &&
+                        <GetEventName open={open} setOpen={setOpen}/>
+                }
+                <BottomNavigationAction label="Reporting" value="reports" icon={<TimelineRoundedIcon/>}/>
+                <BottomNavigationAction label="Setup" value="setup" icon={<SettingsRoundedIcon/>}/>
+            </BottomNavigation>
         </div>
     )
 }

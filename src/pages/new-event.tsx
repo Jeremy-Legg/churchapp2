@@ -1,21 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {useParams, useHistory} from 'react-router-dom';
-import {
-    findFirstIncompleteEvent,
-    useEventsState,
-    useIncompleteEventState,
-    usePeopleState,
-    useTags
-} from "../hooks/data-state";
-import {ChurchEvent, ChurchEvents, IChurchEvent, IChurchEvents} from "../model/IChurchEvent";
-import {Avatar, Card, CardContent, Container, Grid, Paper, Typography} from "@material-ui/core";
-import { createStyles, Theme } from '@material-ui/core/styles';
-
-import {makeStyles} from "@material-ui/core/styles";
-import {IPerson, Person} from "../model/IPerson";
+import React from "react";
+import {useHistory, useParams} from 'react-router-dom';
+import {findFirstIncompleteEvent, useEventsState, usePeopleState} from "../hooks/data-state";
+import {ChurchEvent} from "../model/IChurchEvent";
+import {Container, Grid, Paper} from "@material-ui/core";
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {IPerson} from "../model/IPerson";
 import {NavBar} from "../components/navigation/nav-bar";
-import {OurNavButton} from "../components/nav-button";
-import {useInstanceState} from "../hooks/object-state";
 import {OurNonNavButton} from "../components/non-nav-button";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -110,13 +100,9 @@ export const EventEditorPage = () => {
             <Container className={classes.container}>
                 <Grid className={classes.root} container spacing={2}>
                 {
-
                     people.map((person, index) => {
                         return (
                             <React.Fragment key={index}>
-
-
-
                                     <Grid item xs={6} sm={6}  onClick={() => toggleSelected(person)}>
                                         {!eventBeingEdited?.isPersonInEvent(person) &&
                                         <Paper className={classes.notInEvent}>{person.name}</Paper>
@@ -125,12 +111,6 @@ export const EventEditorPage = () => {
                                         <Paper className={classes.inEvent}>{person.name}</Paper>
                                         }
                                     </Grid>
-
-
-
-
-
-
                             </React.Fragment>
                         )
                     })

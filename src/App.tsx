@@ -11,6 +11,7 @@ function App() {
             <div className="App">
                 <Switch>
                     <Route path={"/setup"}><SetUpPage/></Route>
+                    {/*<Route path={"/newEvent"}><EventEditorPage/></Route>*/}
                     <Route path={"/event/:eventName"}><EventEditorPage/></Route>
                     <Route path={"/"}><HomePage/></Route>
                 </Switch>

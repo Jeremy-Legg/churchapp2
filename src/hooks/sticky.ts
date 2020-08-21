@@ -9,7 +9,8 @@ function useStickyState<S>(key: string, defaultValue: S, generator?: (state: any
 
         let stateAsDict = JSON.parse(stickyValue);
         if (generator !== undefined) {
-            return generator(stateAsDict);
+            let result = generator(stateAsDict);
+            return result;
         }
         return stateAsDict;
     });

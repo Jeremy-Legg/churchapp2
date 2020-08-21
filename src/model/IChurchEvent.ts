@@ -1,5 +1,6 @@
 import {IPerson} from "./IPerson";
 import {v4 as uuidv4} from 'uuid';
+import moment from "moment";
 
 export interface IChurchEvents {
     events: IChurchEvent[]
@@ -56,5 +57,31 @@ export class ChurchEvent implements IChurchEvent {
             this.people.push(person)
 
         }
+    }
+
+    static fromJSON(jsonDict: any) {
+        let event = Object.assign(new ChurchEvent(), jsonDict);
+        let datePart = jsonDict['date'];
+        event.date = moment(datePart).toDate();
+        // // console.log(`Have: ${datePart.constructor.name}`)
+        // if (typeof datePart === "number") {
+        //     try {
+        //         event.date = new Date(datePart)
+        //     } catch (e) {
+        //         console.log(`YOU SUCK BADLY: ${e}`)
+        //     }
+        // } else  if (typeof datePart === "string") {
+        //     try {
+        //         let stupid = Date.parse(datePart);
+        //         event.date = new Date(stupid)
+        //     } catch (e) {
+        //         console.log(`YOU SUCK: ${e}`)
+        //     }
+        // } else if(datePart instanceof Date) {
+        //     // leave alone
+        // } else {
+        //     throw new Error("Unexpected data in event.date while reconstructing from store")
+        // }
+        return event
     }
 }
