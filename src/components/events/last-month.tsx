@@ -36,7 +36,9 @@ export const LastMonth = () => {
                                 return (
                                     <Typography variant="body2" color="textSecondary" component="p" key={index}>
                                         {event?.name}
+                                        {' '}
                                         {event?.people.length}
+                                        {' '}
                                         {moment(event?.date).format("Do MMMM YYYY")}
                                     </Typography>
                                 )

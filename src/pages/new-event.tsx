@@ -7,6 +7,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {IPerson} from "../model/IPerson";
 import {NavBar} from "../components/navigation/nav-bar";
 import {OurNonNavButton} from "../components/non-nav-button";
+import {PageNavigation} from "../components/navigation/page-navigation";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -122,6 +123,7 @@ export const EventEditorPage = () => {
             <OurNonNavButton title={"End Night"} onClick={() => handleEndNight()} className={classes.endNight}/>
             <OurNonNavButton title={"Delete Night"} onClick={() => handleDeleteNight()} className={classes.deleteNight}/>
             </Container>
+            <PageNavigation/>
         </>
     );
 };

@@ -37,7 +37,7 @@ export function getLatestEvent(events: IChurchEvent[]): IChurchEvent | null {
     if (!events) {
         return null;
     }
-    return events[0]
+    return events[events.length - 1]
 }
 
 export function getLastMonthEvents(events: IChurchEvent[], limit: number = 5): IChurchEvent[] {
